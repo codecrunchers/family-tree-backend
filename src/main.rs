@@ -19,7 +19,7 @@ async fn main() -> io::Result<()> {
             // enable logger - always register actix-web Logger middleware last
             .wrap(middleware::Logger::default())
             // register HTTP requests handlers
-            .service(search::name)
+            .service(search::search)
     })
     .bind("0.0.0.0:9090")?
     .run()
