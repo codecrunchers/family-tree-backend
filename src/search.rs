@@ -31,3 +31,15 @@ pub async fn search(query: Path<SearchRequest>) -> HttpResponse {
         .content_type(APPLICATION_JSON)
         .json(serialized)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn from_str() {
+        //let stmt = Statement::new("MATCH n RETURN n");
+        let WEAK = true;
+        assert_eq!(true, WEAK);
+    }
+}
