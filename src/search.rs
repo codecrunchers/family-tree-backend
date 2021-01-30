@@ -19,17 +19,16 @@ pub async fn search(query: Path<SearchRequest>) -> HttpResponse {
 
     let name = query.name.clone();
     let name = name.as_str();
-    let statement = Statement::new("MATCH (p:Person { name: $name }) return p.name")
-        .with_param("name", name)
-        .unwrap();
+    let statement =
+        Statement::new("match (p:Person { name: $name }) return p.pid, p.name, p.dob, p.bio;")
+            .with_param("name", name)
+            .unwrap();
 
     let results = graph.exec(statement).unwrap();
 
-    let serialized = serde_json::to_string(&results).unwrap();
-
     HttpResponse::Created()
         .content_type(APPLICATION_JSON)
-        .json(serialized)
+        .json(results)
 }
 
 #[cfg(test)]
