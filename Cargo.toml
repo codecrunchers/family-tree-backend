@@ -14,5 +14,5 @@ serde_json = "1.0.51"
 chrono = { version = "0.4", features = ["serde"] }
 uuid = { version = "0.8", features = ["serde", "v4"] }
 env_logger = "0.7.1"
-rusted_cypher={ path = "/home/alan/devel/rusted-cypher", branch="neo4j_41" }
+rusted_cypher={ path = "/home/alan/devel/rusted-cypher" }
 

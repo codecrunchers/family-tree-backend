@@ -11,6 +11,7 @@ pub struct SearchRequest {
     pub name: String,
 }
 
+const QUERY :&'static str = "MATCH path = (a:Person{fullName:$name})-[b]->(c)<-[e]-(f) RETURN nodes(path) AS nodes, relationships(path) AS rels";
 /// search by name /search{name}`  for now must match the node name
 #[get("/search/{name}")]
 pub async fn search(query: Path<SearchRequest>) -> HttpResponse {
@@ -19,10 +20,7 @@ pub async fn search(query: Path<SearchRequest>) -> HttpResponse {
 
     let name = query.name.clone();
     let name = name.as_str();
-    let statement =
-        Statement::new("match (p:Person { name: $name }) return p.pid, p.name, p.dob, p.bio;")
-            .with_param("name", name)
-            .unwrap();
+    let statement = Statement::new(QUERY).with_param("name", name).unwrap();
 
     let results = graph.exec(statement).unwrap();
 

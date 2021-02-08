@@ -6,6 +6,7 @@ use std::{env, io};
 use actix_web::{middleware, App, HttpServer};
 
 mod constants;
+mod family;
 mod response;
 mod search;
 
@@ -20,6 +21,7 @@ async fn main() -> io::Result<()> {
             .wrap(middleware::Logger::default())
             // register HTTP requests handlers
             .service(search::search)
+            .service(family::family)
     })
     .bind("0.0.0.0:9090")?
     .run()
