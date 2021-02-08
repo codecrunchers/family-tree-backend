@@ -11,8 +11,8 @@ pub struct SearchRequest {
     pub name: String,
 }
 
-const QUERY :&'static str = "MATCH path = (a:Person{fullName:$name})-[b]->(c)<-[e]-(f) RETURN nodes(path) AS nodes, relationships(path) AS rels";
-/// search by name /search{name}`  for now must match the node name
+const QUERY :&'static str = "MATCH path = (a:Person{fullName:$fullName})-[b]->(c)<-[e]-(f) RETURN nodes(path) AS nodes, relationships(path) AS rels";
+/// search by name /search{fullName}`  for now must match the node name
 #[get("/search/{name}")]
 pub async fn search(query: Path<SearchRequest>) -> HttpResponse {
     use crate::constants::{APPLICATION_JSON, NEO4J_DATABASE, NEO4J_ENDPOINT};
@@ -20,7 +20,7 @@ pub async fn search(query: Path<SearchRequest>) -> HttpResponse {
 
     let name = query.name.clone();
     let name = name.as_str();
-    let statement = Statement::new(QUERY).with_param("name", name).unwrap();
+    let statement = Statement::new(QUERY).with_param("fullName", name).unwrap();
 
     let results = graph.exec(statement).unwrap();
 
