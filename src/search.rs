@@ -4,6 +4,7 @@ use actix_web::HttpResponse;
 //use uuid::Uuid;
 use serde::{Deserialize, Serialize};
 //use crate::response::Response;
+use crate::constants::{APPLICATION_JSON, NEO4J_DATABASE, NEO4J_ENDPOINT};
 use rusted_cypher::{GraphClient, Statement};
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -15,8 +16,8 @@ const QUERY :&'static str = "MATCH path = (a:Person{fullName:$fullName})-[b]->(c
 /// search by name /search{fullName}`  for now must match the node name
 #[get("/search/{name}")]
 pub async fn search(query: Path<SearchRequest>) -> HttpResponse {
-    use crate::constants::{APPLICATION_JSON, NEO4J_DATABASE, NEO4J_ENDPOINT};
-    let graph = GraphClient::connect(NEO4J_ENDPOINT, NEO4J_DATABASE).unwrap();
+    let graph =
+        GraphClient::connect(NEO4J_ENDPOINT.to_string(), NEO4J_DATABASE.to_string()).unwrap();
 
     let name = query.name.clone();
     let name = name.as_str();
@@ -25,7 +26,7 @@ pub async fn search(query: Path<SearchRequest>) -> HttpResponse {
     let results = graph.exec(statement).unwrap();
 
     HttpResponse::Created()
-        .content_type(APPLICATION_JSON)
+        .content_type(APPLICATION_JSON.to_string())
         .json(results)
 }
 

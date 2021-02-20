@@ -28,7 +28,7 @@ RUN groupadd $APP_USER \
     && useradd -g $APP_USER $APP_USER \
     && mkdir -p ${APP}
 
-COPY --from=builder /family-tree-backend/target/release/family_tree_backend ${APP}/family-tree-backend
+COPY --from=builder /family-tree-backend/target/release/rust-docker-web ${APP}/rust-docker-web
 
 RUN chown -R $APP_USER:$APP_USER ${APP}
 

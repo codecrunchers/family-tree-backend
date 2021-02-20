@@ -1,0 +1,5 @@
+[tasks.release_package]
+script = { file = "./package.sh" }
+
+
+

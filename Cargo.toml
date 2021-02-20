@@ -1,10 +1,8 @@
 [package]
-name = "twitter-clone-rust"
+name = "family_tree_backend"
 version = "0.1.0"
-authors = ["Romaric Philogene <rphilogene@qovery.com>"]
+authors = ["Aln Ryan <alan@codecrunchers.ie>"]
 edition = "2018"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 actix-rt = "1.1.0"
@@ -14,5 +12,6 @@ serde_json = "1.0.51"
 chrono = { version = "0.4", features = ["serde"] }
 uuid = { version = "0.8", features = ["serde", "v4"] }
 env_logger = "0.7.1"
-rusted_cypher={ path = "/home/alan/devel/rusted-cypher" }
+rusted_cypher = { git="https://github.com/codecrunchers/rusted-cypher.git", branch="add_graph_response"} 
+lazy_static = "1.4.0" 
 
