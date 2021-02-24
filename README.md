@@ -17,3 +17,4 @@ see `.github` folder
 
 # Local
 for now building with a symlink to local dir
+REST  Proxy  for NEO4J

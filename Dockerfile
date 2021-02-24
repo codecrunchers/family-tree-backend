@@ -1,25 +1,13 @@
-FROM rust:1.50 as builder
-
-RUN USER=root cargo new --bin family-tree-backend
-WORKDIR ./family-tree-backend
-COPY ./Cargo.toml ./Cargo.toml
-RUN cargo build --release
-RUN rm src/*.rs
-
-ADD . ./
-
-RUN rm ./target/release/deps/family_tree_backend*
-RUN cargo build --release
-
-
 FROM debian:buster-slim
 ARG APP=/usr/src/app
+
+ARG RELEASE=""
 
 RUN apt-get update \
     && apt-get install -y ca-certificates tzdata \
     && rm -rf /var/lib/apt/lists/*
 
-EXPOSE 8000
+EXPOSE 9090
 
 ENV TZ=Etc/UTC \
     APP_USER=appuser
@@ -28,11 +16,13 @@ RUN groupadd $APP_USER \
     && useradd -g $APP_USER $APP_USER \
     && mkdir -p ${APP}
 
-COPY --from=builder /family-tree-backend/target/release/family_tree_backend ${APP}/family-tree-backend
+#COPY --from=builder /family-tree-backend/target/release/family_tree_backend ${APP}/family-tree-backend
+ADD https://github.com/codecrunchers/family-tree-backend/releases/download/v${RELEASE}/family_tree_backend ${APP}/family_tree_backend
 
-RUN chown -R $APP_USER:$APP_USER ${APP}
+RUN chown -R $APP_USER:$APP_USER ${APP}/family_tree_backend && chmod u+x ${APP}/family_tree_backend
+
 
 USER $APP_USER
 WORKDIR ${APP}
 
-CMD ["./family-tree-backend"]
+CMD ["./family_tree_backend"]
