@@ -1,10 +1,11 @@
+
 FROM debian:buster-slim
 ARG APP=/usr/src/app
 
 ARG RELEASE
 
 RUN apt-get update \
-    && apt-get install -y ca-certificates tzdata \
+    && apt-get install -y ca-certificates tzdata curl\
     && rm -rf /var/lib/apt/lists/*
 
 EXPOSE 9090
@@ -16,12 +17,8 @@ RUN groupadd $APP_USER \
     && useradd -g $APP_USER $APP_USER \
     && mkdir -p ${APP}
 
-ADD https://codeload.github.com/codecrunchers/family-tree-backend/tar.gz/v${RELEASE} ${APP}/family_tree_backend
-
-RUN chown -R $APP_USER:$APP_USER ${APP}/family_tree_backend && chmod u+x ${APP}/family_tree_backend
-
-
-USER $APP_USER
 WORKDIR ${APP}
-
+RUN curl -SL "https://github.com/codecrunchers/family-tree-backend/releases/download/v0.0.1-testa4/family_tree_backend" --output family_tree_backend 
+RUN  chown -R $APP_USER:$APP_USER family_tree_backend && chmod u+x family_tree_backend
+USER $APP_USER
 CMD ["./family_tree_backend"]
