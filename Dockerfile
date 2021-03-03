@@ -2,7 +2,7 @@
 FROM debian:buster-slim
 ARG APP=/usr/src/app
 
-ARG RELEASE
+ARG FTBE_RELEASE
 
 RUN apt-get update \
     && apt-get install -y ca-certificates tzdata curl\
@@ -18,7 +18,7 @@ RUN groupadd $APP_USER \
     && mkdir -p ${APP}
 
 WORKDIR ${APP}
-RUN curl -SL "https://github.com/codecrunchers/family-tree-backend/releases/download/v${RELEASE}/family_tree_backend" --output family_tree_backend 
+RUN curl -SL "https://github.com/codecrunchers/family-tree-backend/releases/download/v${FTBE_RELEASE}/family_tree_backend" --output family_tree_backend 
 RUN  chown -R $APP_USER:$APP_USER family_tree_backend && chmod u+x family_tree_backend
 USER $APP_USER
 CMD ["./family_tree_backend"]
